@@ -1,0 +1,30 @@
+load("@rules_go//go:def.bzl", "go_binary", "go_library")
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@gazelle//:def.bzl", "gazelle")
+
+gazelle(name = "gazelle")
+
+go_library(
+    name = "bazel-libheif-exp_lib",
+    srcs = ["main.go"],
+    importpath = "bazel-libheif-exp",
+    visibility = ["//visibility:private"],
+    deps = ["@com_github_strukturag_libheif//go/heif"],
+)
+
+go_binary(
+    name = "bazel-libheif-exp",
+    embed = [":bazel-libheif-exp_lib"],
+    gc_linkopts = select({
+        # Mac OS X doesn't support static binaries:
+        # https://developer.apple.com/library/content/qa/qa1118/_index.html
+        "@bazel_tools//src/conditions:darwin": [],
+        "//conditions:default": [
+            "-linkmode",
+            "external",
+            "-extldflags",
+            "-static",
+        ],
+    }),
+    visibility = ["//visibility:public"],
+)

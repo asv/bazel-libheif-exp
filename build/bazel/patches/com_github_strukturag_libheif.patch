@@ -1,0 +1,12 @@
+diff --git a/go/heif/BUILD.bazel b/go/heif/BUILD.bazel
+index d8d3287..9f52341 100644
+--- a/go/heif/BUILD.bazel
++++ b/go/heif/BUILD.bazel
+@@ -4,6 +4,7 @@ go_library(
+     name = "heif",
+     srcs = ["heif.go"],
+     cgo = True,
++    cdeps = ["@@libheif"],
+     importpath = "github.com/strukturag/libheif/go/heif",
+     visibility = ["//visibility:public"],
+ )
